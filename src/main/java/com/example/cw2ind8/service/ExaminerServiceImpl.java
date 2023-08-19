@@ -11,21 +11,22 @@ import java.util.*;
 public class ExaminerServiceImpl implements ExaminerService {
 
     private final List<QuestionService> questionServices = new ArrayList<>();
+    private final Random random;
 
     public ExaminerServiceImpl(
             @Qualifier("javaQuestionService") QuestionService javaQuestionService,
-            @Qualifier("mathQuestionService") QuestionService mathQuestionService
+            @Qualifier("mathQuestionService") QuestionService mathQuestionService,
+            Random random
     ) {
         questionServices.add(javaQuestionService);
         questionServices.add(mathQuestionService);
+        this.random = random;
     }
 
     @Override
     public Collection<Question> getQuestions(int amount) {
 
         Set<Question> questions = new HashSet<>();
-
-        Random random = new Random();
 
         while (questions.size() < amount) {
             int questionServiceIdx = random.nextInt(questionServices.size());
