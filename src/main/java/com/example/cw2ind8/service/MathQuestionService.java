@@ -1,55 +1,41 @@
 package com.example.cw2ind8.service;
 
+import com.example.cw2ind8.exception.MethodNotAllowedException;
 import com.example.cw2ind8.model.Question;
 import com.example.cw2ind8.repository.QuestionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class MathQuestionService implements QuestionService {
 
-    private final QuestionRepository questionRepository;
-
-    public MathQuestionService(@Qualifier("mathQuestionRepository") QuestionRepository questionRepository) {
-        this.questionRepository = questionRepository;
-    }
-
     @Override
     public Question add(String question, String answer) {
-        Question newQuestion = new Question(question, answer);
-        questionRepository.add(newQuestion);
-        return newQuestion;
+        throw new MethodNotAllowedException("Добавление запрещено");
     }
 
     @Override
     public Question add(Question question) {
-        questionRepository.add(question);
-        return question;
+        throw new MethodNotAllowedException("Добавление запрещено");
     }
 
     @Override
     public Question remove(Question question) {
-        questionRepository.remove(question);
-        return question;
+        throw new MethodNotAllowedException("Удаление запрещено");
     }
 
     @Override
     public Collection<Question> getAll() {
-        return questionRepository.getAll();
+        throw new MethodNotAllowedException("Получение вопросов запрещено");
     }
 
     @Override
     public Question getRandomQuestion() {
-        Random random = new Random();
-        Collection<Question> questions = questionRepository.getAll();
-        int randomIdx = random.nextInt(questions.size());
-        return questions.stream()
-                .toList()
-                .get(randomIdx);
+        String randomQuestion = UUID.randomUUID().toString();
+        String randomAnswer = new StringBuilder(randomQuestion).reverse().toString();
+        return new Question(randomQuestion, randomAnswer);
     }
 }
